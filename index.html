@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spotify by SoraPay.id</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent-start:#1DB954;
+    --accent-end:#8B5CF6;
+    --glass-bg: rgba(255,255,255,0.06);
+    --glass-border: rgba(255,255,255,0.14);
+    --text-main:#f1f5f9;
+    --text-muted:#94a3b8;
+  }
+  *{ box-sizing:border-box; }
+  html,body{
+    margin:0; padding:0; min-height:100vh;
+    font-family:'Poppins', sans-serif;
+    color: var(--text-main);
+    background:#0f172a;
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(29,185,84,0.18), transparent 45%),
+      radial-gradient(circle at 85% 0%, rgba(139,92,246,0.22), transparent 45%);
+    background-attachment: fixed;
+  }
+  .wrapper{
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px 18px 48px;
+  }
+  header{
+    text-align:center;
+    margin-bottom: 26px;
+  }
+  .title{
+    margin:0 0 6px;
+    font-size: 1.7rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .subtitle{
+    margin:0;
+    color: var(--text-muted);
+    font-size:.9rem;
+  }
+  .glass{
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+
+  /* ---------- MENU VIEW ---------- */
+  #menuView{ display:flex; flex-direction:column; gap:14px; }
+
+  .playlist-item{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding: 16px 18px;
+    cursor:pointer;
+    transition: transform .2s ease, background .2s ease, border-color .2s ease;
+  }
+  .playlist-item:hover{
+    transform: translateY(-2px);
+    border-color: rgba(29,185,84,0.5);
+  }
+  .playlist-icon{
+    width:52px; height:52px;
+    min-width:52px;
+    border-radius: 14px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.5rem;
+    background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
+  }
+  .playlist-info{ flex:1; min-width:0; }
+  .playlist-info h3{
+    margin:0 0 3px;
+    font-size: 1rem;
+    font-weight:600;
+  }
+  .playlist-info p{
+    margin:0;
+    font-size:.78rem;
+    color: var(--text-muted);
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .chevron{
+    font-size:1.3rem;
+    color: var(--text-muted);
+    transition: transform .2s ease;
+  }
+  .playlist-item:hover .chevron{ transform: translateX(3px); color: var(--accent-start); }
+
+  /* ---------- DETAIL VIEW ---------- */
+  #detailView{ display:none; }
+
+  .back-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background: none;
+    border: 1px solid var(--glass-border);
+    color: var(--text-main);
+    font-family:'Poppins', sans-serif;
+    font-size:.85rem;
+    font-weight:500;
+    padding: 9px 16px;
+    border-radius: 12px;
+    cursor:pointer;
+    margin-bottom: 18px;
+    transition: background .2s ease, border-color .2s ease;
+  }
+  .back-btn:hover{ background: rgba(255,255,255,0.06); border-color: var(--accent-start); }
+
+  .detail-card{ padding: 20px; }
+  .detail-card h2{
+    margin: 0 0 4px;
+    font-size: 1.05rem;
+    font-weight:600;
+  }
+  .detail-card p{
+    margin: 0 0 14px;
+    color: var(--text-muted);
+    font-size:.82rem;
+    line-height:1.5;
+  }
+  iframe{
+    width:100%;
+    border-radius: 14px;
+    border: none;
+  }
+  .open-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin-top: 14px;
+    padding: 11px 20px;
+    border-radius: 12px;
+    font-weight:600;
+    font-size:.88rem;
+    text-decoration:none;
+    color:#0f172a;
+    background: var(--accent-start);
+    transition: filter .2s ease, transform .2s ease;
+  }
+  .open-btn:hover{ filter: brightness(1.08); transform: translateY(-1px); }
+
+  .note{
+    margin-top: 22px;
+    font-size:.76rem;
+    color: var(--text-muted);
+    line-height:1.6;
+    border-top: 1px solid var(--glass-border);
+    padding-top: 14px;
+  }
+  footer{
+    text-align:center;
+    margin-top: 26px;
+    font-size:.75rem;
+    color: var(--text-muted);
+  }
+
+  .credit-footer{
+    max-width: 720px;
+    margin: 28px auto 0;
+    padding: 20px;
+    text-align:center;
+  }
+  .credit-footer h4{
+    margin:0 0 12px;
+    font-size:.9rem;
+    font-weight:700;
+    background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .credit-list{
+    list-style:none;
+    padding:0;
+    margin:0;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    font-size:.82rem;
+  }
+  .credit-list li{ display:flex; justify-content:center; gap:8px; }
+  .credit-label{ color: var(--text-muted); min-width:80px; text-align:right; }
+  .credit-list a{ color:#94b8ff; text-decoration:none; font-weight:500; }
+  .credit-list a:hover{ text-decoration:underline; }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <header>
+    <h1 class="title">Spotify by SoraPay.id</h1>
+    <p class="subtitle">Pilih playlist yang mau kamu dengerin</p>
+  </header>
+
+  <!-- ======== MENU VIEW ======== -->
+  <div id="menuView">
+
+    <div class="playlist-item glass" onclick="openPlaylist('sad')">
+      <div class="playlist-icon">😢</div>
+      <div class="playlist-info">
+        <h3>Sad / Galau Mix</h3>
+        <p>100 lagu · Indonesia &amp; Inggris</p>
+      </div>
+      <div class="chevron">›</div>
+    </div>
+
+    <div class="playlist-item glass" onclick="openPlaylist('djtiktok')">
+      <div class="playlist-icon">🎧</div>
+      <div class="playlist-info">
+        <h3>DJ TikTok Viral</h3>
+        <p>99 lagu · Jedag jedug full bass</p>
+      </div>
+      <div class="chevron">›</div>
+    </div>
+
+    <div class="playlist-item glass" onclick="openPlaylist('cinta')">
+      <div class="playlist-icon">💘</div>
+      <div class="playlist-info">
+        <h3>Lagu Cinta / Romantis</h3>
+        <p>87 lagu · Top romantis Indonesia</p>
+      </div>
+      <div class="chevron">›</div>
+    </div>
+
+    <div class="playlist-item glass" onclick="openPlaylist('milioner')">
+      <div class="playlist-icon">💸</div>
+      <div class="playlist-info">
+        <h3>Vibes Milioner</h3>
+        <p>99 lagu · Luxury &amp; rich vibes</p>
+      </div>
+      <div class="chevron">›</div>
+    </div>
+
+    <div class="playlist-item glass" onclick="openPlaylist('breakbeat')">
+      <div class="playlist-icon">🔊</div>
+      <div class="playlist-info">
+        <h3>Breakbeat</h3>
+        <p>100 lagu · DJ campuran breakbeat FYP</p>
+      </div>
+      <div class="chevron">›</div>
+    </div>
+
+  </div>
+
+  <!-- ======== DETAIL VIEW ======== -->
+  <div id="detailView">
+    <button class="back-btn" onclick="backToMenu()">← Kembali ke Daftar Playlist</button>
+
+    <div class="glass detail-card">
+      <h2 id="detailTitle"></h2>
+      <p id="detailDesc"></p>
+      <iframe id="detailFrame" src="" height="560" frameborder="0" allowfullscreen=""
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"></iframe>
+      <a id="detailOpenBtn" class="open-btn" href="#" target="_blank" rel="noopener noreferrer">
+        Buka Penuh di Spotify ↗
+      </a>
+    </div>
+
+    <div class="note">
+      Player di atas adalah widget resmi dari Spotify, jadi daftar lagunya selalu real-time sama persis dengan playlist
+      aslinya. Untuk dengar full (bukan cuma preview 30 detik) dan menyimpannya ke akunmu, klik "Buka Penuh di Spotify"
+      lalu tekan tombol Follow/Save di aplikasi Spotify dan jangan lupa follow akun admin ya🤩.
+    </div>
+  </div>
+
+  <footer class="glass credit-footer">
+    <h4>Created by</h4>
+    <ul class="credit-list">
+      <li><span class="credit-label">Instagram</span><a href="https://instagram.com/digital_topap_sorapay" target="_blank" rel="noopener noreferrer">@digital_topap_sorapay</a></li>
+      <li><span class="credit-label">Instagram</span><span>@lang.87788</span></li>
+      <li><span class="credit-label">TikTok</span><span>ryuuuuuuuu82</span></li>
+    </ul>
+  </footer>
+
+</div>
+
+<script>
+  const playlists = {
+    sad: {
+      title: "😢 Sad TikTok Songs 2026 — Lagu Galau Indonesia & Inggris",
+      desc: "100 lagu, campuran Indonesia & Inggris, berbagai genre.",
+      id: "4wRWjtfOGukZ6p7y7t8Owy"
+    },
+    djtiktok: {
+      title: "🎧 DJ TikTok Viral 2026 — Jedag Jedug Full Bass Terbaru",
+      desc: "99 lagu remix DJ yang lagi rame dipakai konten TikTok.",
+      id: "2smKV6Ty2nDKeTAMQRXE6T"
+    },
+    cinta: {
+      title: "💘 Top Romantis Indonesia 2026",
+      desc: "87 lagu cinta & romantis Indonesia, cocok buat yang lagi baper.",
+      id: "2dMjS3vkoggsgv8HXnHmFS"
+    },
+    milioner: {
+      title: "💸 Lagu Mahal / Luxury Vibes",
+      desc: "99 lagu bervibe mewah, old money, dan rich energy.",
+      id: "3RNK5Lzj2VwqbA4LnJ5Tky"
+    },
+    breakbeat: {
+      title: "🔊 DJ Campuran Breakbeat FYP Viral TikTok 2026",
+      desc: "100 lagu breakbeat jedag-jedug full bass melody mixtape.",
+      id: "5zENR4KV44fhsEdtoOLbbZ"
+    }
+  };
+
+  const menuView = document.getElementById('menuView');
+  const detailView = document.getElementById('detailView');
+  const detailTitle = document.getElementById('detailTitle');
+  const detailDesc = document.getElementById('detailDesc');
+  const detailFrame = document.getElementById('detailFrame');
+  const detailOpenBtn = document.getElementById('detailOpenBtn');
+
+  function openPlaylist(key) {
+    const pl = playlists[key];
+    if (!pl) return;
+    detailTitle.textContent = pl.title;
+    detailDesc.textContent = pl.desc;
+    detailFrame.src = "https://open.spotify.com/embed/playlist/" + pl.id + "?utm_source=generator&theme=0";
+    detailOpenBtn.href = "https://open.spotify.com/playlist/" + pl.id;
+
+    menuView.style.display = "none";
+    detailView.style.display = "block";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function backToMenu() {
+    detailFrame.src = ""; // stop pemutaran saat kembali
+    detailView.style.display = "none";
+    menuView.style.display = "flex";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+</script>
+</body>
+</html>
