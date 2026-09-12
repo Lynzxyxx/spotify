@@ -511,7 +511,7 @@
 
     <div class="note">
       Player di atas adalah widget resmi dari Spotify, jadi daftar lagunya selalu real-time sama persis dengan playlist
-      aslinya. Untuk dengar full (bukan cuma preview 30 detik) dan menyimpannya ke akunmu, klik "Buka Penuh di Spotify"
+      aslinya. Untuk dengar full dan menyimpannya ke akunmu, klik "Buka Penuh di Spotify"
       lalu tekan tombol Follow/Save di aplikasi Spotify.
     </div>
   </div>
@@ -984,7 +984,7 @@
 
     const audioUrl = 'https://cdn.islamic.network/quran/audio-surah/128/ar.alafasy/' + surahNumber + '.mp3';
     quranAudio.src = audioUrl;
-    quranPlayerTitle.textContent = 'Surah ' + surahNumber + '. ' + SURAH_NAMES[surahNumber] + ' — Murotal lengkap (bacaan penuh, tanpa batas 30 detik)';
+    quranPlayerTitle.textContent = 'Surah ' + surahNumber + '. ' + SURAH_NAMES[surahNumber] + ' — Murotal lengkap';
     quranPlayerBar.classList.add('show');
     quranAudio.play().catch(function() { /* butuh interaksi user tambahan di beberapa browser */ });
   }
